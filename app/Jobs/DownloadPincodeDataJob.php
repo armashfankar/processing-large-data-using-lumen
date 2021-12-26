@@ -23,8 +23,10 @@ class DownloadPincodeDataJob implements ShouldQueue
     }
 
     /**
+     * Read the "all_india_pin_code.csv" file row by row
+     * using curl request and then insert each row in a queue. 
+     * 
      * Execute the job.
-     *
      * @return void
      */
     public function handle()

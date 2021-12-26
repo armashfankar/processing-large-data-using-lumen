@@ -27,8 +27,10 @@ class InsertAddressJob implements ShouldQueue
     }
 
     /**
+     * Fetch row by row record of the csv and insert in the "addresses" table.
+     * If pincode already existing log that pincode record as a warning in a Log file.
+     * 
      * Execute the job.
-     *
      * @return void
      */
     public function handle()
@@ -43,18 +45,7 @@ class InsertAddressJob implements ShouldQueue
         if ($existing_count > 0) {
             $log->warning("Duplicate pincode: " . $pincode);
         } else {
-            $address = new Address;
-            $address->officename = $columns[0];
-            $address->pincode = $pincode;
-            $address->officeType = $columns[2];
-            $address->Deliverystatus = $columns[3];
-            $address->divisionname = $columns[4];
-            $address->regionname = $columns[5];
-            $address->circlename = $columns[6];
-            $address->Taluk = $columns[7];
-            $address->Districtname = $columns[8];
-            $address->statename = $columns[9];
-            $address->save();
+            Address::create($pincode,$columns);
         }
     }
 }
